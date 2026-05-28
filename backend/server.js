@@ -2,9 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer'); // Kept multer so the server accepts the form data without crashing
 
 const app = express();
 
@@ -12,7 +10,7 @@ const app = express();
 const MONGO_URI = "mongodb+srv://asif:Ummulhaina%4020@cluster0.atazdo9.mongodb.net/?appName=Cluster0";
 const JWT_SECRET = "my_super_secret_vmart_key";
 
-// IMPORTANT: Allows your specific Vercel frontend to connect
+// Allows your specific Vercel frontend to connect
 app.use(cors({ origin: 'https://vmart-pied.vercel.app', credentials: true }));
 app.use(express.json());
 
@@ -66,14 +64,9 @@ const protect = async (req, res, next) => {
     if (!token) return res.status(401).json({ message: 'No token' });
 };
 
-// --- CLOUDINARY SETUP (Placeholders so server doesn't crash) ---
-cloudinary.config({ 
-    cloud_name: "PLACEHOLDER", 
-    api_key: "PLACEHOLDER", 
-    api_secret: "PLACEHOLDER" 
-});
-const storage = new CloudinaryStorage({ cloudinary, params: { folder: 'vmart_products' } });
-const upload = multer({ storage });
+// --- MEMORY STORAGE (Replaces Cloudinary for now) ---
+// This accepts image uploads so the server doesn't crash, but doesn't save them anywhere permanently
+const upload = multer({ storage: multer.memoryStorage() });
 
 // --- ROUTES ---
 
@@ -89,12 +82,15 @@ app.post('/api/auth/google', async (req, res) => {
     } catch (err) { res.status(500).json({ message: err.message }); }
 });
 
-// 2. Create Product
+// 2. Create Product (Using dummy image URL since Cloudinary is not setup)
 app.post('/api/products', protect, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'billImage', maxCount: 1 }]), async (req, res) => {
     try {
         const { productName, category, price, quantity, description, condition, usedDuration, sellerPhone, sellerWhatsapp } = req.body;
-        const image = req.files['image'] ? req.files['image'][0].path : '';
-        const billImage = req.files['billImage'] ? req.files['billImage'][0].path : '';
+        
+        // DUMMY IMAGE PLACEHOLDER
+        const image = "https://placehold.co/600x400/1a1a2e/00f2fe?text=VMart+Product";
+        const billImage = "";
+        
         const product = await Product.create({ productName, category, price: Number(price), quantity, description, condition, usedDuration, image, billImage, sellerPhone, sellerWhatsapp, sellerId: req.user._id });
         res.status(201).json(product);
     } catch (err) { res.status(500).json({ message: err.message }); }
