@@ -19,31 +19,95 @@
         <div class="glass-card" style="text-align: center; max-width: 400px;">
             <h1 class="logo" style="font-size: 48px; margin-bottom: 20px;">VMart</h1>
             <p style="margin-bottom: 30px; color: #aaa;">VIT's Own Marketplace</p>
-            <button class="btn btn-primary" onclick="handleLogin()" style="width: 100%;">
+            <button id="login-btn" class="btn btn-primary" style="width: 100%;">
                 <img src="https://img.icons8.com/color/24/000000/google-logo.png" style="vertical-align: middle; margin-right: 10px;">
                 Login with VIT Email
             </button>
         </div>
     </div>
 
+    <!-- LOAD FIREBASE SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    
+    <!-- LOAD YOUR CONFIG -->
     <script src="js/firebase.js"></script>
+    
+    <!-- LOAD AUTH LOGIC -->
     <script src="js/auth.js"></script>
+
+    <!-- BUTTON CLICK LOGIC -->
     <script>
-        // Add ripple to buttons
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                ripple.classList.add('ripple');
-                const rect = this.getBoundingClientRect();
-                ripple.style.left = (e.clientX - rect.left) + 'px';
-                ripple.style.top = (e.clientY - rect.top) + 'px';
-                this.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
+        window.onload = () => {
+            document.getElementById('loader').classList.add('hide');
+            
+            document.getElementById('login-btn').addEventListener('click', async function() {
+                this.innerText = "Opening Google...";
+                
+                // CHECK 1: Is Firebase loaded?
+                if (typeof firebase === 'undefined') {
+                    alert("ERROR: Firebase SDK failed to load. Check your internet or Vercel console.");
+                    this.innerText = "Login with VIT Email";
+                    return;
+                }
+
+                // CHECK 2: Is Firebase Initialized?
+                if (!firebase.apps.length) {
+                    alert("ERROR: Firebase config is missing or wrong in js/firebase.js");
+                    this.innerText = "Login with VIT Email";
+                    return;
+                }
+
+                try {
+                    // TRY TO OPEN POPUP
+                    const result = await auth.signInWithPopup(provider);
+                    const user = result.user;
+                    
+                    // CHECK 3: Is it a VIT email?
+                    if (!user.email.endsWith('@vitstudent.ac.in')) {
+                        await auth.signOut();
+                        showErrorPopup("Only VIT Students Allowed");
+                        this.innerText = "Login with VIT Email";
+                        return;
+                    }
+                    
+                    // SEND TO BACKEND
+                    const res = await fetch('https://vmart-backend-1-tgdm.onrender.com/api/auth/google', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            name: user.displayName, 
+                            email: user.email, 
+                            profileImage: user.photoURL 
+                        })
+                    });
+                    
+                    const data = await res.json();
+                    
+                    if(data.message) {
+                        showErrorPopup(data.message);
+                        this.innerText = "Login with VIT Email";
+                        return;
+                    }
+                    
+                    // SAVE TOKEN AND REDIRECT
+                    localStorage.setItem('vmart_token', data.token);
+                    localStorage.setItem('vmart_user', JSON.stringify(data.user));
+                    window.location.href = 'dashboard.html';
+                    
+                } catch (err) {
+                    console.error("LOGIN ERROR:", err);
+                    if(err.code === 'auth/popup-closed-by-user') {
+                        alert("You closed the popup window.");
+                    } else if(err.code === 'auth/unauthorized-domain') {
+                        alert("ERROR: This Vercel URL is not allowed in Firebase! Go to Firebase Console -> Authentication -> Settings -> Authorized domains, and add your Vercel URL.");
+                    } else {
+                        alert("Login failed: " + err.message);
+                    }
+                    this.innerText = "Login with VIT Email";
+                }
             });
-        });
-        window.onload = () => document.getElementById('loader').classList.add('hide');
+        };
     </script>
 </body>
 </html>
