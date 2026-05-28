@@ -1,11 +1,4 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase Compatible Configuration for VMart
 const firebaseConfig = {
   apiKey: "AIzaSyDU-HwMzyxucdeyTIrA1Ub9eGM3C1fbIQY",
   authDomain: "vmart-4746a.firebaseapp.com",
@@ -17,5 +10,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Google Auth Provider
+const provider = new firebase.auth.GoogleAuthProvider();
+
+// Initialize Auth
+const auth = firebase.auth();
