@@ -46,14 +46,14 @@
                 
                 // CHECK 1: Is Firebase loaded?
                 if (typeof firebase === 'undefined') {
-                    alert("ERROR: Firebase SDK failed to load. Check your internet or Vercel console.");
+                    alert("ERROR: Firebase SDK failed to load.");
                     this.innerText = "Login with VIT Email";
                     return;
                 }
 
                 // CHECK 2: Is Firebase Initialized?
                 if (!firebase.apps.length) {
-                    alert("ERROR: Firebase config is missing or wrong in js/firebase.js");
+                    alert("ERROR: Firebase config is missing in js/firebase.js");
                     this.innerText = "Login with VIT Email";
                     return;
                 }
@@ -71,8 +71,8 @@
                         return;
                     }
                     
-                    // SEND TO BACKEND
-                    const res = await fetch('https://vmart-backend-1-tgdm.onrender.com/api/auth/google', {
+                    // SEND TO YOUR REAL RENDER BACKEND
+                    const res = await fetch('https://vmart-t5mp.onrender.com/api/auth/google', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
@@ -100,7 +100,7 @@
                     if(err.code === 'auth/popup-closed-by-user') {
                         alert("You closed the popup window.");
                     } else if(err.code === 'auth/unauthorized-domain') {
-                        alert("ERROR: This Vercel URL is not allowed in Firebase! Go to Firebase Console -> Authentication -> Settings -> Authorized domains, and add your Vercel URL.");
+                        alert("ERROR: Add your Vercel URL to Firebase Authorized domains!");
                     } else {
                         alert("Login failed: " + err.message);
                     }
