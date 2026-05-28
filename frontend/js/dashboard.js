@@ -1,9 +1,13 @@
+const API_URL = 'https://vmart-t5mp.onrender.com/api';
+
 document.addEventListener('DOMContentLoaded', () => {
+    // If no token, kick them back to login
     if(!getToken()) window.location.href = 'index.html';
+    
     const user = getUser();
     document.getElementById('user-name').innerText = user.name;
     
-    // Typing effect
+    // Typing effect for the subtitle
     const text = "Buy & Sell Safely Inside Campus";
     let i = 0;
     const typeInterval = setInterval(() => {
@@ -13,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 50);
 });
 
-// Particle background
+// --- Particle Background Animation ---
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -29,7 +33,8 @@ class Particle {
         this.speedY = Math.random() * 0.5 - 0.25;
     }
     update() {
-        this.x += this.speedX; this.y += this.speedY;
+        this.x += this.speedX; 
+        this.y += this.speedY;
         if(this.x > canvas.width) this.x = 0;
         if(this.x < 0) this.x = canvas.width;
         if(this.y > canvas.height) this.y = 0;
@@ -46,11 +51,18 @@ class Particle {
 function initParticles() {
     for(let i=0; i<100; i++) particlesArray.push(new Particle());
 }
+
 function animateParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particlesArray.forEach(p => { p.update(); p.draw(); });
     requestAnimationFrame(animateParticles);
 }
+
 initParticles();
 animateParticles();
-window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+// Handle window resizing for particles
+window.addEventListener('resize', () => { 
+    canvas.width = window.innerWidth; 
+    canvas.height = window.innerHeight; 
+});
