@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMart - Chat</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="loader"><div class="spinner"></div></div>
+
+    <nav class="navbar">
+        <div class="logo">VMart</div>
+        <div class="nav-links">
+            <a href="buy.html">← Back</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <div class="chat-container">
+        <div id="chat-box">
+            <!-- Messages render here -->
+        </div>
+        <form class="chat-form" id="chat-form">
+            <input type="text" id="msg-input" placeholder="Type a message..." required autocomplete="off">
+            <button type="submit" class="btn btn-primary" style="margin-left: 10px; padding: 10px 20px;">Send</button>
+        </form>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/chat.js"></script>
+    <script>window.onload = () => document.getElementById('loader').classList.add('hide');</script>
+</body>
+</html>
