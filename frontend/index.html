@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMart - Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="loader"><div class="spinner"></div></div>
+    <canvas id="particles"></canvas>
+    
+    <div id="error-popup">
+        <h2 style="color: red; margin-bottom: 10px;">Access Denied</h2>
+        <p id="error-msg" style="font-size: 18px;"></p>
+    </div>
+
+    <div class="hero">
+        <div class="glass-card" style="text-align: center; max-width: 400px;">
+            <h1 class="logo" style="font-size: 48px; margin-bottom: 20px;">VMart</h1>
+            <p style="margin-bottom: 30px; color: #aaa;">VIT's Own Marketplace</p>
+            <button class="btn btn-primary" onclick="handleLogin()" style="width: 100%;">
+                <img src="https://img.icons8.com/color/24/000000/google-logo.png" style="vertical-align: middle; margin-right: 10px;">
+                Login with VIT Email
+            </button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Add ripple to buttons
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                const rect = this.getBoundingClientRect();
+                ripple.style.left = (e.clientX - rect.left) + 'px';
+                ripple.style.top = (e.clientY - rect.top) + 'px';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+        window.onload = () => document.getElementById('loader').classList.add('hide');
+    </script>
+</body>
+</html>
