@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMart - Buy</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="loader"><div class="spinner"></div></div>
+    <canvas id="particles"></canvas>
+
+    <nav class="navbar">
+        <div class="logo">VMart</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Home</a>
+            <a href="buy.html">Buy</a>
+            <a href="sell.html">Sell</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <div class="filters">
+        <button class="filter-btn active" data-category="All">All</button>
+        <button class="filter-btn" data-category="Electronics">Electronics</button>
+        <button class="filter-btn" data-category="Books">Books</button>
+        <button class="filter-btn" data-category="Hostel Items">Hostel Items</button>
+        <button class="filter-btn" data-category="Cycles">Cycles</button>
+        <button class="filter-btn" data-category="Notes">Notes</button>
+        <button class="filter-btn" data-category="Accessories">Accessories</button>
+    </div>
+
+    <input type="text" id="search-input" placeholder="Search products...">
+
+    <div class="product-grid" id="product-grid">
+        <!-- Skeleton Loading -->
+        <div class="product-card" style="background: rgba(255,255,255,0.05); height: 350px; animation: pulse 1.5s infinite;"></div>
+        <div class="product-card" style="background: rgba(255,255,255,0.05); height: 350px; animation: pulse 1.5s infinite 0.2s;"></div>
+        <div class="product-card" style="background: rgba(255,255,255,0.05); height: 350px; animation: pulse 1.5s infinite 0.4s;"></div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/buy.js"></script>
+    <script>window.onload = () => document.getElementById('loader').classList.add('hide');</script>
+</body>
+</html>
