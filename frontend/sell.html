@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMart - Sell</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="loader"><div class="spinner"></div></div>
+    <canvas id="particles"></canvas>
+    <div id="toast"></div>
+
+    <nav class="navbar">
+        <div class="logo">VMart</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Home</a>
+            <a href="buy.html">Buy</a>
+            <a href="sell.html">Sell</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <div class="form-container glass-card">
+        <h2 style="margin-bottom: 30px; text-align: center; color: var(--primary);">Sell Your Product</h2>
+        <form id="sell-form">
+            <div class="form-group">
+                <input type="text" id="pname" placeholder=" " required>
+                <label>Product Name</label>
+            </div>
+            
+            <div class="form-group">
+                <select id="category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option>Electronics</option>
+                    <option>Books</option>
+                    <option>Hostel Items</option>
+                    <option>Cycles</option>
+                    <option>Notes</option>
+                    <option>Accessories</option>
+                </select>
+            </div>
+
+            <div id="drop-zone">
+                <p>Drag & Drop Image or Click to Upload</p>
+                <input type="file" id="image-input" accept="image/*" style="display: none;">
+            </div>
+
+            <div id="bill-upload" style="display: none; margin-bottom: 20px;">
+                <label>Upload Bill (Required for Electronics)</label>
+                <input type="file" id="bill-input" accept="image/*" style="width: 100%; color: white;">
+            </div>
+
+            <div class="form-group">
+                <textarea id="desc" rows="4" placeholder="Product Description" required></textarea>
+            </div>
+
+            <div style="display: flex; gap: 20px;">
+                <div class="form-group" style="flex: 1;">
+                    <input type="number" id="price" placeholder=" " required>
+                    <label>Price (₹)</label>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <input type="number" id="qty" placeholder=" " required>
+                    <label>Quantity</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <select id="condition" required>
+                    <option value="" disabled selected>Condition</option>
+                    <option>New</option>
+                    <option>Used</option>
+                </select>
+            </div>
+
+            <div id="used-details" class="form-group" style="display: none;">
+                <input type="text" id="used-dur" placeholder="e.g., 6 months">
+                <label>How long used?</label>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="phone" placeholder=" " required>
+                <label>Contact Phone Number</label>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="whatsapp" placeholder=" ">
+                <label>WhatsApp Number (Optional)</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">List Product</button>
+        </form>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/sell.js"></script>
+    <script>
+        document.getElementById('drop-zone').addEventListener('click', () => document.getElementById('image-input').click());
+        window.onload = () => document.getElementById('loader').classList.add('hide');
+    </script>
+</body>
+</html>
