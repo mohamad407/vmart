@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMart - Product</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="loader"><div class="spinner"></div></div>
+    <canvas id="particles"></canvas>
+
+    <nav class="navbar">
+        <div class="logo">VMart</div>
+        <div class="nav-links">
+            <a href="buy.html">← Back to Buy</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <div class="product-details">
+        <div class="p-image">
+            <img id="p-image" src="" alt="Product">
+        </div>
+        <div class="p-info glass-card">
+            <h1 id="p-name" style="font-size: 32px; margin-bottom: 10px;"></h1>
+            <h2 id="p-price" style="color: var(--primary); margin-bottom: 20px;"></h2>
+            
+            <p><strong>Condition:</strong> <span id="p-condition"></span></p>
+            <p><strong>Quantity:</strong> <span id="p-qty"></span></p>
+            <p id="p-used-wrapper" style="display:none;"><strong>Usage:</strong> <span id="p-used"></span></p>
+            
+            <h3 style="margin-top: 20px;">Description</h3>
+            <p id="p-desc" style="color: #aaa;"></p>
+
+            <img id="p-bill" src="" style="max-width: 100%; display: none; margin-top: 20px; border-radius: 10px; border: 1px solid var(--glass-border);">
+
+            <hr style="border-color: var(--glass-border); margin: 20px 0;">
+            <h3>Seller Info</h3>
+            <p id="p-seller-name"></p>
+
+            <div class="p-actions">
+                <a id="p-seller-phone" href="#" class="btn btn-primary">📞 Call Seller</a>
+                <button id="msg-btn" class="btn btn-outline">💬 Message</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/product.js"></script>
+    <script>window.onload = () => document.getElementById('loader').classList.add('hide');</script>
+</body>
+</html>
