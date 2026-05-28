@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMart - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="loader"><div class="spinner"></div></div>
+    <canvas id="particles"></canvas>
+    
+    <nav class="navbar">
+        <div class="logo">VMart</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Home</a>
+            <a href="buy.html">Buy</a>
+            <a href="sell.html">Sell</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Welcome, <span id="user-name">Student</span></h1>
+        <div class="typing-text" id="typing-text"></div>
+        
+        <div class="glass-card" style="margin-top: 40px;">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Why VMart?</h3>
+            <ul style="list-style: none; line-height: 2;">
+                <li>✨ 0% Commission</li>
+                <li>🤝 Sell Directly to Students</li>
+                <li>🔒 No Hidden Charges</li>
+            </ul>
+        </div>
+
+        <div class="hero-buttons">
+            <a href="sell.html" class="btn btn-primary">Sell Product</a>
+            <a href="buy.html" class="btn btn-outline">Buy Products</a>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>window.onload = () => document.getElementById('loader').classList.add('hide');</script>
+</body>
+</html>
