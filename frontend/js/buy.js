@@ -1,3 +1,4 @@
+const API_URL = 'https://vmart-t5mp.onrender.com/api';
 let allProducts = [];
 
 async function fetchProducts() {
