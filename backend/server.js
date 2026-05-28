@@ -1,14 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-dotenv.config();
 const app = express();
+
+// --- HARD-CODED CONFIGURATION ---
+const MONGO_URI = "mongodb+srv://asif:Ummulhaina%4020@cluster0.atazdo9.mongodb.net/?appName=Cluster0";
+const JWT_SECRET = "my_super_secret_vmart_key";
 
 // IMPORTANT: Allows your specific Vercel frontend to connect
 app.use(cors({ origin: 'https://vmart-pied.vercel.app', credentials: true }));
@@ -54,7 +56,7 @@ const protect = async (req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const decoded = jwt.verify(token, JWT_SECRET);
             req.user = await User.findById(decoded.id);
             next();
         } catch (error) {
@@ -64,11 +66,11 @@ const protect = async (req, res, next) => {
     if (!token) return res.status(401).json({ message: 'No token' });
 };
 
-// --- CLOUDINARY SETUP ---
+// --- CLOUDINARY SETUP (Placeholders so server doesn't crash) ---
 cloudinary.config({ 
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET 
+    cloud_name: "PLACEHOLDER", 
+    api_key: "PLACEHOLDER", 
+    api_secret: "PLACEHOLDER" 
 });
 const storage = new CloudinaryStorage({ cloudinary, params: { folder: 'vmart_products' } });
 const upload = multer({ storage });
@@ -82,7 +84,7 @@ app.post('/api/auth/google', async (req, res) => {
         if (!email.endsWith('@vitstudent.ac.in')) return res.status(403).json({ message: 'Only VIT Students Allowed' });
         let user = await User.findOne({ email });
         if (!user) user = await User.create({ name, email, profileImage });
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '30d' });
         res.json({ token, user });
     } catch (err) { res.status(500).json({ message: err.message }); }
 });
@@ -137,7 +139,7 @@ app.get('/api/messages/:productId/:receiverId', protect, async (req, res) => {
 });
 
 // --- START SERVER ---
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(MONGO_URI)
     .then(() => {
         const PORT = process.env.PORT || 5000;
         app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
