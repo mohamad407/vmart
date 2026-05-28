@@ -1,3 +1,4 @@
+const API_URL = 'https://vmart-t5mp.onrender.com/api';
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('productId');
 const receiverId = params.get('receiverId');
